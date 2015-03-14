@@ -1,0 +1,24 @@
+{
+    "manifest_version": 2,
+
+    "name": "Digest Helper",
+    "description": "This extension demonstrates a browser action with kittens.",
+    "version": "0.1",
+    "permissions": [
+        "activeTab",
+        "tabs",
+        "storage"
+    ],
+    "background": {
+	    "scripts": ["script.js"]
+    },
+    "content_scripts": [{
+        "matches": ["http://www.phpdeveloper.org/news/*"],
+        "js": ["localStorage.js", "jquery-1.10.2.min.js", "packages_content.js"]
+    }],
+    "web_accessible_resources": ["localStorage.js", "packages_content.js", "jquery-1.10.2.min.js", "jquery-1.10.2.min.map"],
+    "browser_action": {
+        "default_icon": "images/table_add.png"
+    },
+    "options_page": "options.html"
+}
