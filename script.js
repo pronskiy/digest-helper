@@ -18,7 +18,7 @@ chrome.tabs.onActivated.addListener(function(activeInfo) {
     storage = JSON.parse(localStorage.digest);
     chrome.tabs.get(activeInfo.tabId, function(tab) {
         //console.log(storage);
-        if (undefined === storage[tab.url]) {
+        if (!storage[tab.url]) {
             setIcon('add');
         } else {
             setIcon('accepted');
@@ -33,7 +33,9 @@ chrome.browserAction.onClicked.addListener(function(tab) {
         description: ""
     };
 
-    if (linkObj.url.indexOf("phpdeveloper.org") !== -1) {
+    if (linkObj.url.indexOf("phpdeveloper.org") !== -1
+        ||
+       linkObj.url.indexOf("feedly.com") !== -1) {
         chrome.tabs.executeScript(tab.tabId, {
             file: 'injected.js'
         }, function(result) {
@@ -56,6 +58,10 @@ function setLink(linkObj) {
     console.log('ls: ', localStorage.digest);
 }
 
+chrome.commands.onCommand.addListener(function(command) {
+  console.log('Command:', command);
+});
+
 
 
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
@@ -64,7 +70,14 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
             localStorage[request.storage] = request.value;
         }
         sendResponse({storage: localStorage[request.storage]});
+    } else if (request.url) {
+        if (storage.hasOwnProperty(request.url)) {
+            setIcon('accepted');
+        } else {
+            setIcon('add');
+        }
+        sendResponse("OK");
     } else {
-        sendResponse({});
+        sendResponse(request);
     }
 });
