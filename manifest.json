@@ -1,39 +1,49 @@
 {
-    "manifest_version": 2,
+  "manifest_version": 2,
 
-    "name": "Digest Helper",
-    "description": "This extension demonstrates a browser action with kittens.",
-    "version": "0.1",
-    "permissions": [
-        "activeTab",
-        "tabs",
-        "storage"
-    ],
-    "background": {
-	    "scripts": ["script.js"]
+  "name": "Digest Helper",
+  "description": "This extension demonstrates a browser action with kittens.",
+  "version": "0.1",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage"
+  ],
+  "background": {
+    "scripts": ["jquery-1.10.2.min.js", "script.js"]
+  },
+  "content_scripts": [{
+      "matches": ["http://www.phpdeveloper.org/news/*"],
+      "js": ["localStorage.js", "jquery-1.10.2.min.js", "packages_content.js"]
     },
-    "content_scripts": [
-        {
-            "matches": ["http://www.phpdeveloper.org/news/*"],
-            "js": ["localStorage.js", "jquery-1.10.2.min.js", "packages_content.js"]
-        },
-        {
-            "matches": ["http://feedly.com/i/subscription/feed*"],
-            "js": ["jquery-1.10.2.min.js", "feedlyObserver.js"]
-        }
-    ],
-    "web_accessible_resources": ["localStorage.js", "packages_content.js", "jquery-1.10.2.min.js", "jquery-1.10.2.min.map"],
-    "browser_action": {
-        "default_icon": "images/table_add.png"
-    },
-    "options_page": "options.html",
-    "commands": {
-        "toggle-feature-foo": {
-            "suggested_key": {
-                "default": "Ctrl+Shift+Y",
-                "mac": "Command+Shift+Y"
-            },
-            "description": "Toggle feature foo"
-        }
+    {
+      "matches": ["http://feedly.com/i/subscription/feed*"],
+      "js": ["jquery-1.10.2.min.js", "feedlyObserver.js"]
     }
+  ],
+  "web_accessible_resources": ["localStorage.js", "packages_content.js", "jquery-1.10.2.min.js", "jquery-1.10.2.min.map"],
+  "browser_action": {
+    "default_icon": "images/table_add.png",
+    "default_popup": "popup.html"
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval';object-src 'self'",
+  "options_page": "options.html",
+  "commands": {
+    "toggle-feature-foo": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "Toggle feature foo"
+    },
+    "save-link": {
+      "suggested_key": {
+        "windows": "Ctrl+B",
+        "mac": "Command+B",
+        "chromeos": "Ctrl+B",
+        "linux": "Ctrl+B"
+      },
+      "description": "Save link"
+    }
+  }
 }
