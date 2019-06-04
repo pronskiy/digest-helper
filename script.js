@@ -40,7 +40,7 @@ let getLinks = () => new Promise((resolve, reject) => {
   }
 })
 
-var setIcon = function (type) {
+var setIcon = function(type) {
   var icons = {
     accepted: "images/table_accept.png",
     add: "images/table_add.png"
@@ -52,7 +52,7 @@ var setIcon = function (type) {
 
 }
 
-chrome.tabs.onActivated.addListener(async function (activeInfo) {
+chrome.tabs.onUpdated.addListener(async function(tabId) {
   storage = JSON.parse(localStorage.digest);
   let links = localStorage.links ? JSON.parse(localStorage.links) : false;
   if (!links) {
@@ -60,7 +60,38 @@ chrome.tabs.onActivated.addListener(async function (activeInfo) {
     localStorage.links = JSON.stringify(links);
   }
 
-  chrome.tabs.get(activeInfo.tabId, function (tab) {
+  chrome.tabs.get(tabId, function(tab) {
+    //console.log(storage);
+    if (!storage[tab.url]) {
+      setIcon('add');
+    } else {
+      setIcon('accepted');
+    }
+    let clear_tab_url = (tab.url.slice(-1) === '/' ? tab.url.substr(0, tab.url.length - 1) : tab.url).split('://')[1]
+    if (links[clear_tab_url]) {
+      chrome.browserAction.setBadgeBackgroundColor({
+        color: [100, 100, 100, 100]
+      });
+      chrome.browserAction.setBadgeText({
+        text: links[clear_tab_url].last_num.toString()
+      });
+    } else {
+      chrome.browserAction.setBadgeText({
+        text: ''
+      });
+    }
+  });
+});
+
+chrome.tabs.onActivated.addListener(async function(activeInfo) {
+  storage = JSON.parse(localStorage.digest);
+  let links = localStorage.links ? JSON.parse(localStorage.links) : false;
+  if (!links) {
+    links = await getLinks()
+    localStorage.links = JSON.stringify(links);
+  }
+
+  chrome.tabs.get(activeInfo.tabId, function(tab) {
     //console.log(storage);
     if (!storage[tab.url]) {
       setIcon('add');
@@ -95,7 +126,7 @@ let setLink = (tab) => {
     linkObj.url.indexOf("feedly.com") !== -1) {
     chrome.tabs.executeScript(tab.tabId, {
       file: 'injected.js'
-    }, function (result) {
+    }, function(result) {
       linkObj = result[0];
       _setLink(linkObj);
     });
@@ -113,7 +144,7 @@ function _setLink(linkObj) {
   console.log('ls: ', localStorage.digest);
 }
 
-chrome.commands.onCommand.addListener(function (command) {
+chrome.commands.onCommand.addListener(function(command) {
   console.log('Command:', command);
   if (command != "save-link") return
   chrome.tabs.query({
@@ -123,7 +154,7 @@ chrome.commands.onCommand.addListener(function (command) {
   });
 });
 
-chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
+chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
   if (request.storage) {
     if (typeof request.value != 'undefined') {
       localStorage[request.storage] = request.value;
