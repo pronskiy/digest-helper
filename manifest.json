@@ -38,10 +38,10 @@
     },
     "save-link": {
       "suggested_key": {
-        "windows": "Ctrl+B",
-        "mac": "Command+B",
-        "chromeos": "Ctrl+B",
-        "linux": "Ctrl+B"
+        "windows": "Ctrl+G",
+        "mac": "Command+G",
+        "chromeos": "Ctrl+G",
+        "linux": "Ctrl+G"
       },
       "description": "Save link"
     }
