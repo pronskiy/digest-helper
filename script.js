@@ -173,3 +173,11 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
     sendResponse(request);
   }
 });
+
+chrome.runtime.onMessage.addListener((msg, sender) => {
+  // First, validate the message's structure.
+  if ((msg.from === 'php-digest') && (msg.subject === 'addLink')) {
+    console.log(msg);
+    _setLink(msg.linkObj)
+  }
+});

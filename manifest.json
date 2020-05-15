@@ -17,8 +17,10 @@
       "js": ["localStorage.js", "jquery-1.10.2.min.js", "packages_content.js"]
     },
     {
-      "matches": ["http://feedly.com/i/subscription/feed*"],
-      "js": ["jquery-1.10.2.min.js", "feedlyObserver.js"]
+      "matches": ["https://feedly.com/i/subscription/feed*"],
+      "js": ["feedlyObserver.js"],
+      "css": ["feedly.css"],
+      "run_at": "document_idle"
     }
   ],
   "web_accessible_resources": ["localStorage.js", "packages_content.js", "jquery-1.10.2.min.js", "jquery-1.10.2.min.map"],
