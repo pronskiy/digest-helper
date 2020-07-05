@@ -40,10 +40,10 @@
     },
     "save-link": {
       "suggested_key": {
-        "windows": "Ctrl+G",
-        "mac": "Command+G",
-        "chromeos": "Ctrl+G",
-        "linux": "Ctrl+G"
+        "windows": "Ctrl+D",
+        "mac": "MacCtrl+D",
+        "chromeos": "Ctrl+D",
+        "linux": "Ctrl+D"
       },
       "description": "Save link"
     }

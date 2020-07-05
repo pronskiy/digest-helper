@@ -117,22 +117,26 @@ chrome.tabs.onActivated.addListener(async function(activeInfo) {
 // chrome.browserAction.onClicked.addListener(setLink);
 
 let setLink = (tab) => {
-  let linkObj = {
-    title: tab.title,
-    url: tab.url,
-    description: ""
-  };
-  if (linkObj.url.indexOf("phpdeveloper.org") !== -1 ||
-    linkObj.url.indexOf("feedly.com") !== -1) {
+  // let linkObj = {
+  //   title: tab.title,
+  //   url: tab.url,
+  //   description: ""
+  // };
+
+  // const linkObj = decorateLink(tab);
+
+
+  // if (linkObj.url.indexOf("phpdeveloper.org") !== -1 ||
+  //   linkObj.url.indexOf("feedly.com") !== -1) {
     chrome.tabs.executeScript(tab.tabId, {
       file: 'injected.js'
     }, function(result) {
       linkObj = result[0];
       _setLink(linkObj);
     });
-  } else {
-    _setLink(linkObj);
-  }
+  // } else {
+  //   _setLink(linkObj);
+  // }
 }
 
 function _setLink(linkObj) {
