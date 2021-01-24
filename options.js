@@ -1,5 +1,7 @@
 function htmlEntities(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    return str.replace(/[\u00A0-\u9999<>\&]/g, function(i) {
+        return '&#'+i.charCodeAt(0)+';';
+    });
 }
 
 // Saves options to localStorage.
@@ -38,8 +40,12 @@ function restore_options() {
         content +=
             '<tr>' +
                 '<td>' + link_obj.url + '</td>' +
-                '<td>' + link_obj.title + '</td>' +
-                '<td>' + htmlEntities(link_obj.description).replace(/&lt;blockquote&gt;/g, sp).replace(/&lt;\/blockquote&gt;/g, sp) + '</td>' +
+                '<td>' + htmlEntities(link_obj.title) + '</td>' +
+                '<td>'
+                    + htmlEntities(link_obj.description)
+                        .replace(/&lt;blockquote&gt;/g, sp)
+                        .replace(/&lt;\/blockquote&gt;/g, sp)
+                + '</td>' +
             '</tr>';
     }
     var table = document.getElementById("links");
