@@ -21,6 +21,32 @@ if (document.location.href.search("wiki.php.net/rfc") >= 0) {
         .replace('PHP RFC:', '[RFC]');
 
 } else
+if (document.location.href.search("github.com/") >= 0) {
+    const colonPos = document.title.indexOf(":");
+    title = document.title.slice(0, colonPos);
+    description = document.title.slice(colonPos + 2);
+
+    linkObj.title = title;
+    linkObj.description = description;
+
+} else
+if (document.location.href.search("laravel-news.com") >= 0) {
+    linkObj.title = linkObj.title.replace(' | Laravel News', '');
+} else
+if (document.location.href.search("habr.com") >= 0) {
+    linkObj.title = document.title.slice(0, document.title.indexOf("/"));
+} else
+if (document.location.href.search("symfony.com/blog/a-week-of-symfony") >= 0) {
+    linkObj.title = document.title
+        .replace('(Symfony Blog)', '')
+        .replace('A Week of', 'Неделя')
+        .replace('April', 'апреля')
+        .replace('May', 'мая')
+        .replace('June', 'июня')
+        .replace('July', 'июля')
+        .trim()
+    ;
+} else
 if (document.location.href.search("phpdeveloper.org") >= 0) {
     linkObj = {
         url: document.querySelector('span.comment_count a').getAttribute("href"),
@@ -29,6 +55,14 @@ if (document.location.href.search("phpdeveloper.org") >= 0) {
     };
 }
 
-copyToClip('<table><tr><td>' + linkObj.url + "</td>\t<td>" + linkObj.title + '</td></tr></table>');
+// copyToClip('<table><tr>' +
+//     '<td>' + linkObj.url + "</td>\t" +
+//     "<td>" + linkObj.title + "</td>\t" +
+//     "<td>" + linkObj.description + '</td>' +
+//     '</tr></table>');
+
+copyToClip(
+    '<li><a href="' + linkObj.url + '">'+ linkObj.title + '</a> — '+ linkObj.description + '</li>'
+);
 
 linkObj;
