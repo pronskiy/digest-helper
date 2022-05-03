@@ -15,6 +15,12 @@ function copyToClip(str) {
     document.removeEventListener("copy", listener);
 }
 
+if (document.location.href.search("youtube.com/") >= 0) {
+	linkObj.title = document.title
+		.trim()
+		.replace(' - YouTube', '');
+
+} else
 if (document.location.href.search("wiki.php.net/rfc") >= 0) {
     linkObj.title = document.querySelector('h1.sectionedit1').innerHTML
         .trim()
