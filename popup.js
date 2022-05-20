@@ -3,31 +3,36 @@ let getLinks = () => new Promise((resolve, reject) => {
     $.get(
       'https://raw.githubusercontent.com/pronskiy/php-digest/gh-pages/links.json',
       resp => resolve(resp.reduce((acc, el, idx) => {
-        let matchs = el.link.match(/href="([^"]+)"/g)
-        if (!matchs || !matchs.length) {
-          console.info(`Can't get link from in ${idx} item:`, el)
-          return acc
-        }
-        matchs = matchs.map(match => match.substr(6, match.length - (match.slice(-2) === '/"' ?
-          8 : 7)).split("://")[1])
-        for (let match of matchs) {
-          let url = match,
-            num = parseInt(el.issueNumber),
-            issue = {
-              num: num,
-              url: el.issueUrl
-            }
-          if (!acc[url]) {
-            acc[url] = {
-              issues: [issue],
-              last_num: num
-            }
-          } else {
-            if (acc[url].last_num < num) acc[url].last_num = num
-            acc[url].issues.push(issue)
+          let matches = el.link.match(/href="([^"]+)"/g)
+          if (!matches || !matches.length) {
+              console.info(`Can't get link from in ${idx} item:`, el)
+              return acc
           }
-        }
-        return acc
+          matches = matches.map(match => match.substr(6, match.length - (match.slice(-2) === '/"' ?
+              8 : 7)).split("://")[1])
+          for (let match of matches) {
+              let url = match,
+                  num = el.issueNumber,
+                  date = Date.parse(el.date),
+                  issue = {
+                      num: num,
+                      date: date,
+                      url: el.issueUrl
+                  }
+              if (!acc[url]) {
+                  acc[url] = {
+                      issues: [issue],
+                      last_num: num,
+                      last_date: date,
+                  }
+              } else {
+                  if (acc[url].last_date < date) {
+                      acc[url].last_num = num
+                  }
+                  acc[url].issues.push(issue)
+              }
+          }
+          return acc
       }, {})), "json"
     )
   } catch (e) {
