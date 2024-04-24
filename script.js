@@ -40,6 +40,42 @@ let getLinks = () => new Promise((resolve, reject) => {
   }
 })
 
+/*
+
+let getLinks = () => fetch('https://raw.githubusercontent.com/pronskiy/php-digest/gh-pages/links.json')
+  .then(response => response.json())
+  .then(data => data.reduce((acc, el, idx) => {
+        let matches = el.link.match(/href="([^"]+)"/g)
+        if (!matches || !matches.length) {
+          console.info(`Can't get link from in ${idx} item:`, el)
+          return acc
+        }
+        matches = matches.map(match => match.substr(6, match.length - (match.slice(-2) === '/"' ?
+          8 : 7)).split("://")[1])
+
+        for (let match of matches) {
+          let url = match,
+            num = parseInt(el.issueNumber),
+            issue = {
+              num: num,
+              url: el.issueUrl
+            }
+          if (!acc[url]) {
+            acc[url] = {
+              issues: [issue],
+              last_num: num
+            }
+          } else {
+            if (acc[url].last_num < num) acc[url].last_num = num
+            acc[url].issues.push(issue)
+          }
+        }
+        return acc
+      }, {}))
+  .catch(e => console.error(e));
+
+*/
+
 var setIcon = function(type) {
   var icons = {
     accepted: "images/table_accept.png",
@@ -115,7 +151,7 @@ chrome.tabs.onActivated.addListener(async function(activeInfo) {
 });
 
 let setLink = (tab) => {
-    chrome.tabs.executeScript(tab.tabId, {
+    chrome.tabs.executeScript(tab.id, {
       file: 'injected.js'
     }, function(result) {
       linkObj = result[0];
@@ -136,7 +172,8 @@ chrome.commands.onCommand.addListener(function(command) {
   console.log('Command:', command);
   if (command != "save-link") return
   chrome.tabs.query({
-    active: true
+    active: true, 
+    lastFocusedWindow: true,
   }, tabs => {
     setLink(tabs[0])
   });

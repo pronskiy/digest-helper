@@ -7,7 +7,7 @@ var linkObj = {
 function copyToClip(str) {
     function listener(e) {
         e.clipboardData.setData("text/html", str);
-        e.clipboardData.setData("text/plain", str);
+        // e.clipboardData.setData("text/plain", str);
         e.preventDefault();
     }
     document.addEventListener("copy", listener);
@@ -24,7 +24,7 @@ if (document.location.href.search("youtube.com/") >= 0) {
 if (document.location.href.search("wiki.php.net/rfc") >= 0) {
     linkObj.title = document.querySelector('h1.sectionedit1').innerHTML
         .trim()
-        .replace('PHP RFC:', '[RFC]');
+        .replace('PHP RFC:', 'RFC: ');
 
 } else
 if (document.location.href.search("github.com/") >= 0) {
@@ -45,11 +45,11 @@ if (document.location.href.search("habr.com") >= 0) {
 if (document.location.href.search("symfony.com/blog/a-week-of-symfony") >= 0) {
     linkObj.title = document.title
         .replace('(Symfony Blog)', '')
-        .replace('A Week of', 'Неделя')
-        .replace('April', 'апреля')
-        .replace('May', 'мая')
-        .replace('June', 'июня')
-        .replace('July', 'июля')
+        // .replace('A Week of', 'Неделя')
+        // .replace('April', 'апреля')
+        // .replace('May', 'мая')
+        // .replace('June', 'июня')
+        // .replace('July', 'июля')
         .trim()
     ;
 } else
@@ -68,7 +68,7 @@ if (document.location.href.search("phpdeveloper.org") >= 0) {
 //     '</tr></table>');
 
 copyToClip(
-    '<li><a href="' + linkObj.url + '">'+ linkObj.title + '</a> — '+ linkObj.description + '</li>'
+    '<li><a href="' + linkObj.url + '">'+ linkObj.title + '</a> – '+ linkObj.description + '.</li>'
 );
 
 linkObj;

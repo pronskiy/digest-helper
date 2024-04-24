@@ -12,16 +12,7 @@
   "background": {
     "scripts": ["jquery-1.10.2.min.js", "script.js"]
   },
-  "content_scripts": [{
-      "matches": ["http://www.phpdeveloper.org/news/*"],
-      "js": ["localStorage.js", "jquery-1.10.2.min.js", "packages_content.js"]
-    },
-    {
-      "matches": ["https://feedly.com/i/subscription/feed*"],
-      "js": ["feedlyObserver.js"],
-      "css": ["feedly.css"],
-      "run_at": "document_idle"
-    }
+  "content_scripts": [
   ],
   "web_accessible_resources": ["localStorage.js", "packages_content.js", "jquery-1.10.2.min.js", "jquery-1.10.2.min.map"],
   "browser_action": {
@@ -31,13 +22,6 @@
   "content_security_policy": "script-src 'self' 'unsafe-eval';object-src 'self'",
   "options_page": "options.html",
   "commands": {
-    "toggle-feature-foo": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+Y",
-        "mac": "Command+Shift+Y"
-      },
-      "description": "Toggle feature foo"
-    },
     "save-link": {
       "suggested_key": {
         "windows": "Ctrl+D",
