@@ -64,7 +64,7 @@ let _setLink = (linkObj) => {
     setIcon('accepted');
   }
   localStorage.digest = JSON.stringify(storage);
-  $('#btn-li').text('Данный сайт загружен в локальное хранилище.')
+  $('#btn-li').text('This page is saved to local storage.')
   console.log('popup ls: ', localStorage.digest);
 }
 var setIcon = function (type) {
@@ -96,21 +96,21 @@ let storage, links;
     console.log("clear_tab_url", clear_tab_url)
     if (links[clear_tab_url]) {
       for (let issue of links[clear_tab_url].issues) {
-        ul.append(`<li><a href="${issue.url}">${issue.num}. ${issue.url}</a></li>`)
+        ul.append(`<li><a href="${issue.url}">${issue.num}</a></li>`)
       }
     } else {
-      ul.append(`<li>Данного сайта нет среди загруженных</li>`)
+      ul.append(`<li>This page is not indexed</li>`)
     }
     if (!storage[tab.url]) {
-      let li = $(`<li id="btn-li"><button>Сохранить ссылку</button></li>`)
+      let li = $(`<li id="btn-li"><button>Save link</button></li>`)
       li.find('button').click(() => {
         setLink(tab)
       })
       ul.append(li)
     } else {
-      ul.append(`<li>Данный сайт загружен в локальное хранилище.</li>`)
+      ul.append(`<li>This page is saved to local storage.</li>`)
     }
-    let li_get_remote = $(`<li id="btn-li-update"><button>Обновить ссылки</button></li>`)
+    let li_get_remote = $(`<li id="btn-li-update"><button>Update links</button></li>`)
     li_get_remote.find('button').click(async () => {
       links = await getLinks()
       localStorage.links = JSON.stringify(links);
@@ -119,6 +119,7 @@ let storage, links;
     ul.append(li_get_remote)
   }
   chrome.tabs.query({
-    active: true
+    active: true,
+    lastFocusedWindow: true,
   }, query_callback)
 })();
